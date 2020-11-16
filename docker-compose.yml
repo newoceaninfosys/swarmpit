@@ -30,9 +30,13 @@ services:
           - node.role == manager
 
   db:
-    image: couchdb:2.3.0
+    image: couchdb:2.3.1
     volumes:
       - db-data:/opt/couchdb/data
+      - ./config/couchdb:/opt/couchdb/etc/local.d
+    ports:
+      - 5986:5986
+      - 5984:5984
     networks:
       - net
     deploy:
@@ -48,6 +52,9 @@ services:
     image: influxdb:1.7
     volumes:
       - influx-data:/var/lib/influxdb
+      - ./config/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
+    ports:
+      - 8086:8086
     networks:
       - net
     deploy:
